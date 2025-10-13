@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormQuizService } from '../services/form-quiz.service';
 
 @Component({
   selector: 'app-form-quiz',
@@ -7,233 +9,31 @@ import { Component } from '@angular/core';
 })
 export class FormQuizComponent {
 
-  quizContent = [
-    {
-      id: 1,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 2,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 3,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 4,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 5,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 6,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 7,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 8,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 9,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    },
-    {
-      id: 10,
-      question: 'Quel est le principal avantage des composants dans Angular ?',
-      answers: [
-        {
-          answer: 'Accélérer le temps de chargement de la page',
-          correct: false
-        },
-        {
-          answer: 'Encapsulation et réutilisabilité du code',
-          correct: true
-        },
-        {
-          answer: 'Facilité de déploiement',
-          correct: false
-        },
-        {
-          answer: 'Optimisation du SEO',
-          correct: false
-        }
-      ]
-    }
-  ];
+  quizContent = this.formQuizService.quizContent;
+  isQuizFinished = this.formQuizService.isQuizFinished;
+  score = this.formQuizService.score;
+
+  constructor(private formQuizService: FormQuizService) {}
 
   getAnswerLetter(j: number) {
     return String.fromCharCode(65 + j);
   }
 
+  checkAnswers() {
+    this.formQuizService.checkAnswers();
+    this.score = this.formQuizService.score;
+    this.isQuizFinished = this.formQuizService.isQuizFinished;
+  }
+
+  addAnswer(answer: string, questionId: number) {
+    this.formQuizService.addAnswer(answer, questionId);
+  }
+
+  isAnswerSelected(answer: string, id: number) {
+    const isAnswered = this.formQuizService.playerAnswers.find((a) => a.questionId === id);
+    if (!isAnswered) return false;
+    return isAnswered.answer === answer;
+  }
 
 
 }
